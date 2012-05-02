@@ -1,0 +1,34 @@
+.jsdoverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #000;
+    opacity: 0.4;
+    width: 100%;
+}
+.jsdloading{
+    background: #fff url(images/loading.gif) center no-repeat;
+    height: 60px;
+    width: 60px;
+}
+
+.jsdcontainer{
+    background-color: #fff;
+    position: fixed;
+    border: 10px solid #866E6E;
+    border-radius: 18px;
+    box-shadow: 5px 5px 5px #39220d;
+}
+.jsdcbutton {
+    background: transparent url(images/close.png);
+    height: 24px;
+    width: 24px;
+    position: absolute;
+    top: -15px;
+    right: -15px;
+}
+.jsdcontent {
+    padding: 10px;
+    min-height: 80px;
+    min-width: 120px;
+}
