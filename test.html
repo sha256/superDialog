@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml-transitional.dtd">
+<html>
+<head>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="superdialog.js"></script>
+<link rel='stylesheet' href='superdialog.css' type='text/css' />
+<style>
+body{
+ margin: 0;
+}
+#main, #heightin {
+ font-family: verdana;
+ margin-top: 100px;
+ position: relative;
+ padding-left: 50px;
+ width: 80%;
+}
+#heightin {
+   height: 1000px;
+}
+a{
+color: #3BBD57;
+}
+</style>
+<script>
+ 
+ $(document).ready(function(){
+
+   $('.linkcls').superDialog();
+   $('.formcls').superDialog();
+   
+});
+</script>
+</head>
+<body>
+<div id='main'>
+<h3>superDialog Demo V 1.0</h3>
+
+<div id="hiddo" style='display:none;'>
+   This div was hidden initially, You wanted to see it! right?
+</div>
+
+<a href='#' rel='#hiddo' class='linkcls'> Show A hidden Div</a><br/>
+<a href='extrafiles/ajax1.html' class='linkcls'>Show a page using Ajax</a><br/>
+<a href='extrafiles/formprocess.html?yes=thistime&no=later' class='linkcls'>Send Query using ajax</a><br/>
+<a href='extrafiles/ajaxform.html' class='linkcls'>View A form & submit is using ajax</a><br/>
+<br/><br/>
+form:
+<form action="extrafiles/formprocess.html" method="GET" class='formcls'>
+  <input name='yes' type='text'/>
+  <input name='foo' type='text'/><br/>
+  <input type="submit" value="Submit"/>
+</form>
+</div>
+<div id='heightin'>
+</div>
+
+</body>
+</html>
