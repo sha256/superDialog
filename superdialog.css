@@ -32,3 +32,25 @@
     min-height: 80px;
     min-width: 120px;
 }
+/* == added v2.0 == */
+.jsdmbutton {
+    background: transparent url(images/minimize.png);
+    height: 24px;
+    width: 24px;
+    position: absolute;
+    top: -15px;
+    right: 10px;
+}
+.jsdminimized{
+    box-shadow: 4px 4px 3px rgb(111, 111, 111);
+    position: fixed;
+    width: 60px;
+    height: 20px;
+    background-color: #CD3E3E;
+    border: 1px solid black;
+    /* */
+}
+
+.jsdminimized:hover{
+    background-color: #62378E;
+}

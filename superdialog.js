@@ -4,34 +4,43 @@
  Author URI: http://hasnath.net
  Author Emai: shamim@hasnath.net
  Description: A lightweight Modal Dialog plugin for jquery
+ License: GPL
 */
-
-
 (function($) {
   
   var settings;
   var defaults = {
     overlay: true,
-    method: 'GET'
+    method: 'GET',
+    minimize: false,
+    minimizeleft: 100,
+    minimizebottom: 20
   };
 
-   var overlay = 'jsdoverlay', cont = 'jsdcontent', container = 'jsdcontainer',
-      loading = 'jsdoading', closebtn = 'jsdcbutton';
-   var overlayId = '#jsdoverlay', containerId = '#jsdcontainer';
+  var unikcls = '';
   
   var doch, winh, winw;
   
+   var overlay = 'jsdoverlay', cont = 'jsdcontent', container = 'jsdcontainer',
+      loading = 'jsdloading', closebtn = 'jsdcbutton',
+      overlayId = '.jsdoverlay', containerId = '.jsdcontainer';
+  
+  //Plugin starts
   $.fn.superDialog = function(options) {      
       settings = $.extend(defaults, options);
-      var trigEvent = this.is('form') ? "submit" : "click";
+      var trig = this.is('form') ? "submit" : "click";
       
       doch= $(document).height();
       winh = $(window).height();
       winw = $(window).width();
     
-    $("body").on(trigEvent, this.selector, function(e){
+    $("body").on(trig, this.selector, function(e){
         e.preventDefault();
         var $this = $(this);
+        
+        
+        var rand = Math.floor(Math.random()*10000);       
+        unikcls = 'jsdxcontainer'+rand;
         
         showLoading();
         
@@ -63,39 +72,82 @@
   
   var showDialog = function(content){
         $(containerId).removeClass(loading);
-        $("#"+cont).remove();
         
-       $("<div/>").attr('id', cont).addClass(cont).html(content).appendTo(containerId);
+
+       $("<div/>").addClass(cont).html(content).appendTo("."+unikcls);
         
-        var w = $(containerId).width();
-        var h = $(containerId).height();
+        var w = $("."+unikcls).width();
+        var h = $("."+unikcls).height();
         var pos = getpos(w, h);
+       
         $("<div/>").addClass(closebtn).appendTo(containerId);
-       $(containerId).css({width: 60, height: 60})
-       .animate({width: w + 'px', height: h+'px', left: pos[0]+'px', top: pos[1] + 'px'}, 200);
+         if(settings.minimize == true){
+              $("<div/>").addClass('jsdmbutton').appendTo(containerId);
+        }
+       $("."+unikcls).css({width: 60, height: 60})
+       .animate({width: w + 'px', height: h+'px', left: pos[0]+'px', top: pos[1] + 'px'}, 100);
        
        //close button      
         $("."+closebtn).click(function(){
-            $(overlayId+", "+containerId).remove();
-        });  
-    }
+            $(overlayId).remove();
+            $(this).parent().remove();
+        });
+        
+        
+        if(settings.minimize == false) return; // don't go farther if minimize is off
+	
+        //minimize button
+        $(".jsdmbutton").click(function(){
+          
+          var koy = $(this).parent().attr('role');
+          var wok = winh - settings.minimizebottom;
+          var lef = getFreeSpace(wok);
+          if(lef==  -1) alert("Sorry! Overflow!"); else {
+                $('<div/>').addClass('jsdminimized').attr('role', koy).css({left: pos[0]+'px', top: pos[1] + 'px'})
+                .show().appendTo(document.body).animate({left: lef+'px', top: wok+'px'}, 200);
+                $(this).parent().hide();
+          }
+        });
+        
+        $('body').on("click", ".jsdminimized", function(){
+          var clsp = $(this).attr('role');
+          $('.'+clsp).show();
+          $(this).remove();
+        });
+    } //plugin
   
   var showLoading = function(){
-    var pos = getpos(60, 60);
     
-    $(overlayId+", "+containerId).remove(); // remove previous instances
-    if(settings.overlay){
-        $("<div/>").attr('id', overlay).addClass(overlay)
+    var pos = getpos(60, 60);
+    if(settings.minimize==false){
+    $(overlayId+", ."+container).remove(); // remove previous instances
+    }
+    if(settings.overlay==true && settings.minimize==false){
+        $("<div/>").addClass(overlay)
         .css('height', doch).appendTo(document.body);   //create overlay
     }
-    $("<div/>").attr('id', container).addClass(container+" "+loading)
+    $("<div/>").addClass(container+" "+loading+" "+unikcls).attr('role', unikcls)
     .css({left: pos[0]+'px', top: pos[1]+'px'}).appendTo(document.body); //container & loading
     //close
-    $(overlayId).click(function(){ $(overlayId+", "+containerId).remove(); });  
+    if(!settings.minimize){
+      $(overlayId).click(function(){ $(overlayId+", "+containerId).remove(); });
+    }
   }
   
-  var getpos = function(w, h){  
-    return [winw/2 - w/2,  winh/2 - h/2 ];
+  var getpos = function(w, h){
+    return [winw/2 - w/2,  winh/2 - h/2];
+  }
+  
+ var getFreeSpace = function(h){
+    var st = settings.minimizeleft, ele, cls;
+    var cond = winw-70;
+    for(; st<cond; st+=70){
+        ele = document.elementFromPoint(st, h);
+	cls = ele.className.replace(/\s/, ".");
+        if(!(cls.length > 1))
+        return st;
+    }    
+    return -1;
   }
  
 })( jQuery );
