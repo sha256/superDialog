@@ -97,13 +97,13 @@
         if(settings.minimize == false) return; // don't go farther if minimize is off
 	
         //minimize button
-        $(".jsdmbutton").click(function(){
+        $(".jsdmbutton").click(function(e){
           
           var koy = $(this).parent().attr('role');
           var wok = winh - settings.minimizebottom;
           var lef = getFreeSpace(wok);
           if(lef==  -1) alert("Sorry! Overflow!"); else {
-                $('<div/>').addClass('jsdminimized').attr('role', koy).css({left: pos[0]+'px', top: pos[1] + 'px'})
+                $('<div/>').addClass('jsdminimized').attr('role', koy).css({left: (e.pageX-120)+'px', top: (e.pageY-$(window).scrollTop()+20)+'px'})
                 .show().appendTo(document.body).animate({left: lef+'px', top: wok+'px'}, 200);
                 $(this).parent().hide();
           }
